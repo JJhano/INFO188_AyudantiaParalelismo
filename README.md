@@ -8,7 +8,7 @@ Se puede instalar con:
 ``` bash
 sudo apt install cabal-install
 ```
-
+Las librerias se pueden instalar con los siguientes comandos:
 ``` bash
 cabal install --lib parallel
 
