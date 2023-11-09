@@ -6,7 +6,12 @@ de la libreria 'parallel' y 'monad-par'.
 Como requisito se tiene que tener instalado 'cabal' en linux
 Se puede instalar con: sudo apt install cabal-install
 
-cabal install parallel
-cabal install monad-par
+``` bash
+cabal install --lib parallel
 
-(Hecho en Ubuntu 22.04)
+```
+``` bash
+cabal install --lib monad-par
+
+```
+Hecho en Ubuntu 22.04)
