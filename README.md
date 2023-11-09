@@ -4,7 +4,10 @@ de la libreria 'parallel' y 'monad-par'.
 
 # Instalacion 
 Como requisito se tiene que tener instalado 'cabal' en linux
-Se puede instalar con: sudo apt install cabal-install
+Se puede instalar con: 
+``` bash
+sudo apt install cabal-install
+```
 
 ``` bash
 cabal install --lib parallel
