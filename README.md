@@ -1,2 +1,12 @@
 # INFO188_AyudantiaParalelismo
-Ayudantia para la asignatura INFO188 UACh 
+Ayudantia para la asignatura INFO188 UACh sobre paralelismo en Haskell utilizando Monada Eval y Monada Par
+de la libreria 'parallel' y 'monad-par'.
+
+# Instalacion 
+Como requisito se tiene que tener instalado 'cabal' en linux
+Se puede instalar con: sudo apt install cabal-install
+
+cabal install parallel
+cabal install monad-par
+
+(Hecho en Ubuntu 22.04)
