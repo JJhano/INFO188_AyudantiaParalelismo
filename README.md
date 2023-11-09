@@ -15,6 +15,9 @@ cabal install --lib parallel
 ```
 ``` bash
 cabal install --lib monad-par
+```
+``` bash
+cabal install --lib time
 
 ```
-Hecho en Ubuntu 22.04)
+Hecho en Ubuntu 22.04
