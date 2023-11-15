@@ -26,7 +26,7 @@
 import System.Environment
 import System.IO
 import Control.Exception
--- import Control.DeepSeq
+import Control.DeepSeq
 -- import Control.Parallel
 -- import Control.Parallel.Strategies
 import Control.Monad.Par
@@ -44,7 +44,7 @@ calc z c k = let znext = z*z + c
              in calc znext c (k-1)
 
 -- proceso
-proceso :: Int  -> Int -> Par [Char]
+proceso :: Int  -> Int -> [Char]
 proceso n k = let r1 = -1.5
                   dr = 3.0/(fromIntegral n) :: Float
                   im1 = 1.0
@@ -52,36 +52,34 @@ proceso n k = let r1 = -1.5
               in
                 barridoPar n k n n r1 dr im1 dim r1 im1
 
-barridoPar :: Int -> Int -> Int -> Int -> Float -> Float -> Float -> Float -> Float -> Float -> Par [Char]
-barridoPar n k 0 0  r1 dr i1 di x y = return []
-barridoPar n k 0 ny r1 dr i1 di x y = do
-  let z = 0.0 :+ 0.0
-      c = x :+ y
-      xnext = r1
-      ynext = y - di
-  rest <- spawn $ barridoPar n k n (ny-1) r1 dr i1 di xnext ynext
-  restVal <- get rest
-  return ((calc z c k) : restVal)
-barridoPar n k nx ny r1 dr i1 di x y = do
-  let z = 0.0 :+ 0.0
-      c = x :+ y
-      xnext = x + dr
-  rest <- spawn $ barridoPar n k (nx-1) ny r1 dr i1 di xnext y
-  restVal <- get rest
-  return ((calc z c k) : restVal)
 
-barrido :: Int -> Int -> Int -> Int -> Float -> Float -> Float -> Float -> Float -> Float -> [Char]
-barrido n k 0 0  r1 dr i1 di x y = []
-barrido n k 0 ny r1 dr i1 di x y = let  
+
+barridoIzq :: Int -> Int -> Int -> Int -> Float -> Float -> Float -> Float -> Float -> Float -> [Char]
+barridoIzq n k 0 0  r1 dr i1 di x y = []
+barridoIzq n k 0 ny r1 dr i1 di x y = let  
                                         z = (0.0 :+ 0.0)
                                         c = (x :+ y) :: (Complex Float)
                                         xnext = r1
                                         ynext = y-di
-                                  in (calc z c k) : barrido n k n (ny-1) r1 dr i1 di xnext ynext
-barrido n k nx ny r1 dr i1 di x y = let z = (0.0 :+ 0.0)
+                                  in (calc z c k) : barridoIzq n k n (ny-1) r1 dr i1 di xnext ynext
+
+barridoDer :: Int -> Int -> Int -> Int -> Float -> Float -> Float -> Float -> Float -> Float -> [Char] 
+barridoDer n k 0 0  r1 dr i1 di x y = []
+barridoDer n k nx ny r1 dr i1 di x y = let 
+                                        z = (0.0 :+ 0.0)
                                         c = (x :+ y)
                                         xnext = x+dr
-                                    in (calc z c k) : barrido n k (nx-1) (ny) r1 dr i1 di xnext y
+                                    in (calc z c k) : barridoDer n k (nx-1) (ny) r1 dr i1 di xnext y
+
+barridoPar :: Int -> Int -> Int -> Int -> Float -> Float -> Float -> Float -> Float -> Float -> [Char]
+barridoPar n k nx ny r1 dr il di x y = runPar $ do
+    i <- new
+    j <- new
+    fork (put i(barridoIzq n k nx ny r1 dr il di x y))
+    fork (put j(barridoDer n k nx ny r1 dr il di x y))
+    a <- get i
+    b <- get j
+    return (a ++ b)
 
 printSpace :: (Show a) => [a] -> Int -> String
 printSpace [] _ = ""
@@ -98,7 +96,7 @@ main = do
     -- I) ARGS
     args <- getArgs
     if (length args) /= 3
-        then error $ "run as ./prog n k j\nn = diminio de n x n\nk = iteraciones\nj= chunck size"
+        then error $ "run as ./prog n k\nn = diminio de n x n\nk = iteraciones"
         else return ()
     let n = read (args !! 0) :: Int
     let k = read (args !! 1) :: Int
@@ -109,10 +107,15 @@ main = do
     -- II) CALCULO 
     printf ("Calculando.........................\n")
     hFlush stdout
+    t1 <- getCurrentTime
+    -- normal <- evaluate (proceso n k `using` rdeepseq)
+    -- normal `deepseq` printf "done normal: "
+    -- printTimeSince t1
     t0 <- getCurrentTime
-    r <- evaluate (runPar $ proceso n k)
-    -- r `deepseq` printf "done paralelo: "
+    r <- evaluate (proceso n k)
+    r `deepseq` printf "done paralelo: "
     printTimeSince t0
+
 
     -- III) resultado (imprimir solo si n es relativamente pequeno, para evitar flood de print)
     if n <= 256
