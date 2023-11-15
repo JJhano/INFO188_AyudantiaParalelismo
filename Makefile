@@ -1,4 +1,4 @@
-SRC=main.hs
+SRC=main2.hs
 all:
 	ghc -dynamic -threaded -eventlog -rtsopts ${SRC} -o prog
 	ghc -dynamic -threaded -eventlog -rtsopts -package random Ayudantia.hs -o ayuda
