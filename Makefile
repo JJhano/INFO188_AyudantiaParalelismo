@@ -10,3 +10,4 @@ all:
 	#   Al ejecutar:
 	#   ./prog args +RTS -NX -ls -RTS
 	#   NX -> N1, N2, .... numero de CPU threads en un pool.
+

@@ -87,12 +87,15 @@ main = do
 
 
     -- II) CALCULO 
-    printf ("Calculando.........................")
+    printf ("Calculando.........................\n")
     hFlush stdout
+    t1 <- getCurrentTime
+    normal <- evaluate (proceso n k `using` rdeepseq)
+    normal `deepseq` printf "done normal: "
+    printTimeSince t1
     t0 <- getCurrentTime
-    --r <- evaluate (proceso n k `using` rdeepseq)
     r <- evaluate (proceso n k `using` parListChunk 100 rdeepseq)
-    r `deepseq` printf "done: "
+    r `deepseq` printf "done paralelo: "
     printTimeSince t0
 
 

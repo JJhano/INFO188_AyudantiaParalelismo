@@ -27,8 +27,6 @@ import Text.Printf
 --
 --
 
-
-
 -- Función para sumar dos matrices en paralelo con estrategia de evaluación
 parMatAdd :: [Int] -> [Int] -> Strategy Int -> [Int]
 parMatAdd [] [] _ = []
@@ -36,6 +34,7 @@ parMatAdd [] l _ = l
 parMatAdd l [] _ = l
 parMatAdd (x:xs) (y:ys) strat = ((x+y) `using` strat) : parMatAdd xs ys strat
 
+-- Función para sumar dos matrices normal
 parMatAdd' :: [Int] -> [Int] -> [Int]
 parMatAdd' [] [] = []
 parMatAdd' [] l  = l
@@ -45,7 +44,7 @@ parMatAdd' (x:xs) (y:ys) = (x+y) : parMatAdd' xs ys
 -- Función para generar una lista de n números aleatorios en el rango [1,100]
 generateRandomList :: Int -> Int -> [Int]
 generateRandomList n seed = take n $ randomRs (1, 100) (mkStdGen seed)
-
+-- Funcion para imprimir el tiempo
 printTimeSince t0 = do
   t1 <- getCurrentTime
   printf "time: %.3fs\n" (realToFrac (diffUTCTime t1 t0) :: Double)
@@ -54,6 +53,7 @@ printTimeSince t0 = do
 -- Ejemplo de uso:
 main :: IO ()
 main = do
+    -- Argumentos de ejecucion
     args <- getArgs
     if (length args) /= 1
         then error $ "run as ./prog n "
@@ -62,11 +62,12 @@ main = do
     let n = read (args !! 0) :: Int
     let matrix1 = generateRandomList n 109 
     let matrix2 = generateRandomList n 18 
+    -- Ejecucion normal
     t1 <- getCurrentTime
     result <- evaluate( parMatAdd' matrix1 matrix2)
     result `deepseq` printf "normal done: "
     printTimeSince t1
-
+    -- Ejecucion en paralelo 
     t0 <- getCurrentTime
     result2 <- evaluate(parMatAdd matrix1 matrix2 rseq)
     result2 `deepseq` printf "parallel done: "
@@ -101,3 +102,4 @@ main = do
 --          b) generalize su funcion y reciba un segundo argumento, que es 
 --             un entero indicando la regla de simulacion. La regla 
 --             descrita anteriormente correspondia a la regla 90 (01011010)
+
