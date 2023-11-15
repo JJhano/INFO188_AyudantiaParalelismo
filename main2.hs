@@ -55,8 +55,8 @@ proceso n k = let r1 = -1.5
 
 
 barridoIzq :: Int -> Int -> Int -> Int -> Float -> Float -> Float -> Float -> Float -> Float -> [Char]
-barridoIzq n k 0 0  r1 dr i1 di x y = []
-barridoIzq n k 0 ny r1 dr i1 di x y = let  
+barridoIzq n k _ 0  r1 dr i1 di x y = []
+barridoIzq n k _ ny r1 dr i1 di x y = let  
                                         z = (0.0 :+ 0.0)
                                         c = (x :+ y) :: (Complex Float)
                                         xnext = r1
