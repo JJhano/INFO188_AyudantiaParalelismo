@@ -64,12 +64,12 @@ main = do
     let matrix2 = generateRandomList n 18 
     -- Ejecucion normal
     t1 <- getCurrentTime
-    result <- evaluate( parMatAdd' matrix1 matrix2)
+    result <- evaluate(parMatAdd' matrix1 matrix2)
     result `deepseq` printf "normal done: "
     printTimeSince t1
     -- Ejecucion en paralelo 
     t0 <- getCurrentTime
-    result2 <- evaluate(parMatAdd matrix1 matrix2 rseq)
+    result2 <- evaluate(parMatAdd matrix1 matrix2 rpar)
     result2 `deepseq` printf "parallel done: "
     printTimeSince t0
 
@@ -78,28 +78,3 @@ main = do
     --     else return()
     -- print result
     return()
-
-
--- II) Escriba la funcion 'simCA' que simule en paralelo 
--- la evolucion de un automata celular de 1 dimension.
---
--- INPUT:  una lista donde cada elemento es una celula en estado 0 o 1.
--- OUTPUT: otra lista con el nuevo estado del automata celular.
--- BORDES: puede asumir que existen valores '0' rodeando los bordes.
---
--- REGLA de evolucion: el proximo estado de cada celda se calcula 
--- en base a su estado actual y el de su vecino izq y der. Los posibles 
--- casos son:
---      tn   -> 111  110  101  100  011  010  001  000
---      tn+1 ->  0    1    0    1    1    0    1    0
---
---      Ejemplo:
---          simCA [0, 1, 0, 1, 1, 0, 1] 
---          -->   [1, 0, 0, 1, 1, 0, 0]
---
---          a) implemente la funcion en paralelo, decida usted si usara 
---              estrategias o accelerate.
---          b) generalize su funcion y reciba un segundo argumento, que es 
---             un entero indicando la regla de simulacion. La regla 
---             descrita anteriormente correspondia a la regla 90 (01011010)
-

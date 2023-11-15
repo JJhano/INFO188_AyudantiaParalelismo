@@ -17,11 +17,6 @@
 --      - Comente sus resultados en relacion a CONF1 y CONF2, fueron los que esperaba? si? no? argumente por que.
 --
 --
--- Q3)(2.5pts) Proponga una forma de paralelizar el programa usando la Monada Par. (Haga una copia con nombre Q3.hs)
---      - Explique claramente su plan de paralelizacion.
---      - Reporte cual fue el tiempo de ejecucion al usar 1, 2, 4, 8 threads. (una tabla para cada CONF)
---      - Compare el rendimiento obtenido con su paralelizacion anterior en la pregunta Q2.
---      - Existe alguna otra config de inputs donde esta modalidad de paralelizacion pueda lograr mejor aceleracion Q2?
 --         
 import System.Environment
 import System.IO
@@ -91,7 +86,7 @@ main = do
     printf ("Calculando.........................\n")
     hFlush stdout
     t1 <- getCurrentTime
-    normal <- evaluate (proceso n k `using` rdeepseq)
+    normal <- evaluate (proceso n k)
     normal `deepseq` printf "done normal: "
     printTimeSince t1
     t0 <- getCurrentTime

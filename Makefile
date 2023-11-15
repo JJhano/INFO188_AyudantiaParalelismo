@@ -1,6 +1,10 @@
 SRC=main.hs
+PROG=prog
+AYUDA=ayuda
+MONADA=monadaPar
 all:
 	ghc -dynamic -threaded -eventlog -rtsopts ${SRC} -o prog
+	ghc -dynamic -threaded -eventlog -rtsopts main2.hs -o monadaPar
 	ghc -dynamic -threaded -eventlog -rtsopts -package random Ayudantia.hs -o ayuda
 	#   -dynamic  : para algunas distribuciones (ej: Arch Linux)
 	#   -threaded : permitir el uso de threads
@@ -11,3 +15,5 @@ all:
 	#   ./prog args +RTS -NX -ls -RTS
 	#   NX -> N1, N2, .... numero de CPU threads en un pool.
 
+clean:
+	rm -f $(PROG) $(AYUDA) $(MONADA) *.o *.hi
