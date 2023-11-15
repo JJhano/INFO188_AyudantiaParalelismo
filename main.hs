@@ -78,11 +78,12 @@ main:: IO ()
 main = do
     -- I) ARGS
     args <- getArgs
-    if (length args) /= 2
+    if (length args) /= 3
         then error $ "run as ./prog n k\nn = diminio de n x n\nk = iteraciones"
         else return ()
     let n = read (args !! 0) :: Int
     let k = read (args !! 1) :: Int
+    let j = read (args !! 2) :: Int
     printf "Setup n=%i   k=%i\n" n k
 
 
@@ -94,7 +95,7 @@ main = do
     normal `deepseq` printf "done normal: "
     printTimeSince t1
     t0 <- getCurrentTime
-    r <- evaluate (proceso n k `using` parListChunk 100 rdeepseq)
+    r <- evaluate (proceso n k `using` parListChunk j rpar)
     r `deepseq` printf "done paralelo: "
     printTimeSince t0
 
