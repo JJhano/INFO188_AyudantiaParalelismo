@@ -1,11 +1,13 @@
 SRC=main.hs
+SRC2=monadaPar.hs
+SRC3=monadaEval.hs
 PROG=prog
-AYUDA=ayuda
-MONADA=monadaPar
+MONADAEVAL=monadaeval
+MONADAPAR=monadapar
 all:
 	ghc -dynamic -threaded -eventlog -rtsopts ${SRC} -o prog
-	ghc -dynamic -threaded -eventlog -rtsopts main2.hs -o monadaPar
-	ghc -dynamic -threaded -eventlog -rtsopts -package random Ayudantia.hs -o ayuda
+	ghc -dynamic -threaded -eventlog -rtsopts ${SRC2} -o monadapar
+	ghc -dynamic -threaded -eventlog -rtsopts -package random monadaEval.hs -o monadaeval
 	#   -dynamic  : para algunas distribuciones (ej: Arch Linux)
 	#   -threaded : permitir el uso de threads
 	#   -eventlog : registrar los eventos en un log para futuro uso (threadscope)
@@ -16,4 +18,4 @@ all:
 	#   NX -> N1, N2, .... numero de CPU threads en un pool.
 
 clean:
-	rm -f $(PROG) $(AYUDA) $(MONADA) *.o *.hi
+	rm -f $(PROG) $(MONADAPAR) $(MONADAEVAL) *.o *.hi
