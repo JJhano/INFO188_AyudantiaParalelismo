@@ -20,4 +20,3 @@ cabal install --lib monad-par
 cabal install --lib time
 
 ```
-Hecho en Ubuntu 22.04

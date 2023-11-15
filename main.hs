@@ -74,7 +74,7 @@ main = do
     -- I) ARGS
     args <- getArgs
     if (length args) /= 3
-        then error $ "run as ./prog n k\nn = diminio de n x n\nk = iteraciones\nj= chunck size"
+        then error $ "run as ./prog n k j\nn = diminio de n x n\nk = iteraciones\nj= chunck size"
         else return ()
     let n = read (args !! 0) :: Int
     let k = read (args !! 1) :: Int
