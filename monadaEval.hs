@@ -56,7 +56,7 @@ main = do
     -- Argumentos de ejecucion
     args <- getArgs
     if (length args) /= 1
-        then error $ "run as ./prog n "
+        then error $ "run as ./monadaeval n +RTS -NX -ls -RTS"
         else return ()
     printf ("Calculando.........................\n")
     let n = read (args !! 0) :: Int

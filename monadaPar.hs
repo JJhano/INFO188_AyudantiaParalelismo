@@ -43,7 +43,7 @@ main :: IO ()
 main = do
 	args <- getArgs
 	if (length args) /= 1
-		then error $ "Run as ./prog n"
+		then error $ "Run as ./monadapar n +RTS -NX -ls -RTS <example in makefile>"
 		else return () 
 	let n = read (args !! 0) :: Int
 	t0 <- getCurrentTime

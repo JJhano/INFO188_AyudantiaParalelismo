@@ -74,7 +74,7 @@ main = do
     -- I) ARGS
     args <- getArgs
     if (length args) /= 3
-        then error $ "run as ./prog n k\nn = diminio de n x n\nk = iteraciones"
+        then error $ "run as ./prog n k\nn = diminio de n x n\nk = iteraciones\nj= chunck size"
         else return ()
     let n = read (args !! 0) :: Int
     let k = read (args !! 1) :: Int
@@ -90,7 +90,7 @@ main = do
     normal `deepseq` printf "done normal: "
     printTimeSince t1
     t0 <- getCurrentTime
-    r <- evaluate (proceso n k `using` parList rpar)
+    r <- evaluate (proceso n k `using` parListChunk j rpar)
     r `deepseq` printf "done paralelo: "
     printTimeSince t0
 
